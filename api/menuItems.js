@@ -28,17 +28,13 @@ const checkMenuId = (req, res, next) => {
 }
 
 const checkMenuItemId = (req, res, next) => {
-    console.log(req.params.menuItemId);
-    if (req.params.menuItemId === '999') {
-        res.status(404).send();
-    }
     db.get('SELECT * FROM MenuItem WHERE id = $menuItemId', {$menuItemId: req.params.menuItemId}, (error, row) => {
         if (error) {
             next(error);
-        } else if (!row) {
-            res.status(404).send();
-        } else {
+        } else if (row) {
             next();
+        } else {
+            res.status(404).send();
         }
     });
 }

@@ -19,17 +19,14 @@ const checkValidEmployee = (req, res, next) => {
 };
 
 const checkValidTimesheetId = (req, res, next) => {
-    if (req.params.timesheetId === '999') {
-        res.status(404).send();
-    }
     if (req.params.timesheetId) {
         db.get('SELECT * FROM Timesheet WHERE id = $timesheetId', {$timesheetId: req.params.timesheetId}, (error, row) => {
             if (error) {
                 next(error) 
-            } else if (!row) {
-                res.status(404).send();
-            } else {
+            } else if (row) {
                 next();
+            } else {
+                res.status(404).send();
             }
         });
     }

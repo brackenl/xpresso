@@ -20,10 +20,10 @@ const checkMenuId = (req, res, next) => {
     db.get('SELECT * FROM Menu WHERE id = $menu', {$menu: req.params.menuId}, (error, row) => {
         if (error) {
             next(error);
-        } else if (!row) {
-            res.status(404).send();
-        } else {
+        } else if (row) {
             next();
+        } else {
+            res.status(404).send();
         }
     });
 }
